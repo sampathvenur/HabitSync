@@ -24,3 +24,59 @@ button {
 button:hover {
     background-color: #0056b3;
 }
+
+
+/* To-Do List Styles */
+.todo-container {
+    margin-top: 20px;
+    text-align: left;
+}
+
+.todo-container h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#todoInput {
+    width: 70%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#addTodo {
+    padding: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#addTodo:hover {
+    background-color: #0056b3;
+}
+
+#todoList {
+    list-style-type: none;
+    padding: 0;
+}
+
+.todo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f8f8f8;
+    padding: 8px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.todo-item input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.todo-item .delete {
+    color: red;
+    cursor: pointer;
+}

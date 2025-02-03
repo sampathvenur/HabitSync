@@ -10,8 +10,16 @@
     <div class="container">
         <h1>HabitSync</h1>
         <p>Your personal habit tracker & Pomodoro timer.</p>
-        <button id="testButton">Click Me!</button>
+
+        <!-- To-Do List Section -->
+        <div class="todo-container">
+            <h2>To-Do List</h2>
+            <input type="text" id="todoInput" placeholder="Add a new task...">
+            <button id="addTodo">Add</button>
+            <ul id="todoList"></ul>
+        </div>
     </div>
     <script src="popup.js"></script>
+    <script src="storage.js"></script>
 </body>
 </html>
