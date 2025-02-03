@@ -1,0 +1,2 @@
+# HabitSync
+A Chrome Extension
