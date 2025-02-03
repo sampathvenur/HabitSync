@@ -25,7 +25,6 @@ button:hover {
     background-color: #0056b3;
 }
 
-
 /* To-Do List Styles */
 .todo-container {
     margin-top: 20px;
@@ -79,4 +78,49 @@ button:hover {
 .todo-item .delete {
     color: red;
     cursor: pointer;
+}
+
+/* Pomodoro Timer Styles */
+.pomodoro-container {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.timer {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+button {
+    margin: 5px;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#startTimer {
+    background-color: #28a745;
+    color: white;
+}
+
+#pauseTimer {
+    background-color: #ffc107;
+    color: black;
+}
+
+#resetTimer {
+    background-color: #dc3545;
+    color: white;
+}
+
+/* Pomodoro Timer Input */
+#setMinutes {
+    width: 50px;
+    text-align: center;
+    font-size: 16px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
