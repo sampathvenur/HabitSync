@@ -1,0 +1,21 @@
+{
+    "manifest_version": 3,
+    "name": "HabitSync",
+    "version": "1.0",
+    "description": "A simple habit tracker with a Pomodoro timer and to-do list.",
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "./icons/icon16.png",
+            "48": "./icons/icon48.png",
+            "128": "./icons/icon148.png"
+        }
+    },
+    "permissions": [
+        "storage",
+        "alarms"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    }
+}
