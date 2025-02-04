@@ -162,3 +162,163 @@ chrome.runtime.onMessage.addListener((message) => {
         updateTimerDisplay();
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const habitInput = document.getElementById("habitInput");
+    const addHabitButton = document.getElementById("addHabit");
+    const habitList = document.getElementById("habitList");
+
+    // Load habits from storage when popup opens
+    chrome.storage.sync.get("habits", function (data) {
+        if (data.habits) {
+            data.habits.forEach(storedHabit => {
+                // Ensure streak continuity and checkbox reset
+                let habit = {
+                    text: storedHabit.text,
+                    streak: storedHabit.streak || 0,
+                    lastCompleted: storedHabit.lastCompleted || null,
+                    completed: false // Default to unchecked, will be set later
+                };
+
+                // If habit was completed today, keep it checked
+                if (isToday(habit.lastCompleted)) {
+                    habit.completed = true;
+                } 
+                // If the last completion was NOT yesterday, reset streak
+                else if (!isYesterday(habit.lastCompleted)) {
+                    habit.streak = 0;
+                }
+
+                addHabitToUI(habit);
+            });
+        }
+    });
+
+    // Add new habit
+    addHabitButton.addEventListener("click", function () {
+        const habitText = habitInput.value.trim();
+        if (habitText) {
+            const newHabit = {
+                text: habitText,
+                streak: 0,
+                lastCompleted: null,
+                completed: false
+            };
+            addHabitToUI(newHabit);
+            saveHabits();
+            habitInput.value = "";
+        }
+    });
+
+    // Function to add a habit to the UI
+    function addHabitToUI(habit) {
+        const listItem = document.createElement("li");
+        listItem.classList.add("habit-item");
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = habit.completed;
+        checkbox.addEventListener("change", function () {
+            if (checkbox.checked) {
+                if (!isToday(habit.lastCompleted)) {
+                    if (isYesterday(habit.lastCompleted)) {
+                        habit.streak += 1; // Continue streak if last completed yesterday
+                    } else {
+                        habit.streak = habit.streak > 0 ? habit.streak : 1; // Restore streak if it was mistakenly reduced
+                    }
+                }
+                habit.lastCompleted = getTodayDate();
+            }
+        
+            // Once checked, disable the checkbox from being unchecked for the rest of the day
+            if (checkbox.checked) {
+                checkbox.disabled = true; // Disable unchecking
+            }
+        
+            console.log("🟢 Streak updated:", habit.streak, "Last Completed:", habit.lastCompleted);
+        
+            updateHabitDisplay(listItem, habit);
+            saveHabits();
+        });
+                
+        const habitText = document.createElement("span");
+        habitText.classList.add("habit-text");
+        habitText.textContent = habit.text;
+
+        const streakDisplay = document.createElement("span");
+        streakDisplay.classList.add("habit-streak");
+
+        const deleteButton = document.createElement("span");
+        deleteButton.textContent = "❌";
+        deleteButton.classList.add("delete");
+        deleteButton.addEventListener("click", function () {
+            listItem.remove();
+            saveHabits();
+        });
+
+        listItem.appendChild(checkbox);
+        listItem.appendChild(habitText);
+        listItem.appendChild(streakDisplay);
+        listItem.appendChild(deleteButton);
+        habitList.appendChild(listItem);
+
+        updateHabitDisplay(listItem, habit);
+    }
+
+    function updateHabitDisplay(listItem, habit) {
+        const streakDisplay = listItem.querySelector(".habit-streak");
+    
+        // Store the correct streak in the dataset for later retrieval
+        listItem.dataset.streak = habit.streak;
+    
+        if (habit.streak > 0) {
+            streakDisplay.innerHTML = `Streak: ${habit.streak} 🔥`;
+            streakDisplay.style.color = "green";
+        } else {
+            streakDisplay.innerHTML = "Streak: 0";
+            streakDisplay.style.color = "red";
+        }
+    }
+    
+
+    function saveHabits() {
+        const habits = [];
+        document.querySelectorAll(".habit-item").forEach(item => {
+            const habitText = item.querySelector(".habit-text").textContent;
+            const checkbox = item.querySelector("input");
+    
+            // Retrieve the updated habit object
+            const habit = {
+                text: habitText,
+                streak: parseInt(item.dataset.streak) || 0, // Get from dataset (stores latest value)
+                lastCompleted: checkbox.checked ? getTodayDate() : null,
+                completed: checkbox.checked
+            };
+    
+            habits.push(habit);
+        });
+    
+        chrome.storage.sync.set({ habits: habits }, function () {
+            console.log("✅ Habits saved correctly:", habits);
+        });
+    }
+    
+    
+
+    // Utility function to get today's date (YYYY-MM-DD)
+    function getTodayDate() {
+        return new Date().toISOString().split("T")[0];
+    }
+
+    // Check if given date is today
+    function isToday(date) {
+        return date === getTodayDate();
+    }
+
+    // Check if given date is yesterday
+    function isYesterday(date) {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        return date === yesterday.toISOString().split("T")[0];
+    }
+});
