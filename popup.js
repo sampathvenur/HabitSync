@@ -1,3 +1,4 @@
+// ------------------------To-Do event handlers------------------------
 document.addEventListener("DOMContentLoaded", function () {
     const todoInput = document.getElementById("todoInput");
     const addTodoButton = document.getElementById("addTodo");
@@ -11,12 +12,12 @@ document.addEventListener("DOMContentLoaded", function () {
         const taskText = todoInput.value.trim();
         if (taskText) {
             addTodo(taskText);
-            saveTodos(); // Save updated tasks
+            saveTodos();
             todoInput.value = "";
         }
     });
 
-    // Function to add a task
+    // Function to add/check/delete a task
     function addTodo(taskText, completed = false) {
         const listItem = document.createElement("li");
         listItem.classList.add("todo-item");
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.checked = completed;
-        checkbox.addEventListener("change", saveTodos); // Save when checkbox is checked
+        checkbox.addEventListener("change", saveTodos);
 
         const taskSpan = document.createElement("span");
         taskSpan.textContent = taskText;
@@ -40,6 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
             saveTodos();
         });
 
+        // Save changes to list
         listItem.appendChild(checkbox);
         listItem.appendChild(taskSpan);
         listItem.appendChild(deleteButton);
@@ -49,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to save tasks in Chrome Storage
     function saveTodos() {
         const tasks = [];
-        document.querySelectorAll(".todo-item").forEach(item => {
+        document.querySelectorAll(".todo-item").forEach((item) => {
             const taskText = item.querySelector("span").textContent;
             const completed = item.querySelector("input").checked;
             tasks.push({ text: taskText, completed });
@@ -62,12 +64,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function loadTodos() {
         chrome.storage.sync.get("todos", function (data) {
             if (data.todos) {
-                data.todos.forEach(task => addTodo(task.text, task.completed));
+                data.todos.forEach((task) => addTodo(task.text, task.completed));
             }
         });
     }
 });
 
+// ------------------------Pomodoro Timer event handlers------------------------
 // Pomodoro Timer Variables
 let timerRunning = false;
 let timerMinutes = 25;
@@ -82,7 +85,7 @@ const startButton = document.getElementById("startTimer");
 const pauseButton = document.getElementById("pauseTimer");
 const resetButton = document.getElementById("resetTimer");
 
-// Load timer state when popup opens
+// Load timer state from Chrome Storage when popup opens
 loadFromStorage("pomodoro", (data) => {
     if (data) {
         timerMinutes = data.minutes;
@@ -117,11 +120,11 @@ startButton.addEventListener("click", function () {
 pauseButton.addEventListener("click", function () {
     if (timerRunning) {
         timerRunning = false;
-        pauseButton.textContent = "Resume"; // Change button text to Resume
+        pauseButton.textContent = "Resume";
         chrome.runtime.sendMessage({ action: "pauseTimer" });
     } else {
         timerRunning = true;
-        pauseButton.textContent = "Pause"; // Change button text back to Pause
+        pauseButton.textContent = "Pause";
         chrome.runtime.sendMessage({ action: "resumeTimer" });
     }
     saveTimerState();
@@ -132,7 +135,7 @@ resetButton.addEventListener("click", function () {
     timerRunning = false;
     timerMinutes = parseInt(setMinutesInput.value) || 25;
     timerSeconds = 0;
-    pauseButton.textContent = "Pause"; // Reset button text
+    pauseButton.textContent = "Pause";
     chrome.runtime.sendMessage({ action: "resetTimer", minutes: timerMinutes });
     saveTimerState();
     updateTimerDisplay();
@@ -163,27 +166,28 @@ chrome.runtime.onMessage.addListener((message) => {
     }
 });
 
+// ------------------------Habit Tracker event handlers------------------------
 document.addEventListener("DOMContentLoaded", function () {
     const habitInput = document.getElementById("habitInput");
     const addHabitButton = document.getElementById("addHabit");
     const habitList = document.getElementById("habitList");
 
-    // Load habits from storage when popup opens
+    // Load habits from Chrome Storage when popup opens
     chrome.storage.sync.get("habits", function (data) {
         if (data.habits) {
-            data.habits.forEach(storedHabit => {
+            data.habits.forEach((storedHabit) => {
                 // Ensure streak continuity and checkbox reset
                 let habit = {
                     text: storedHabit.text,
                     streak: storedHabit.streak || 0,
                     lastCompleted: storedHabit.lastCompleted || null,
-                    completed: false // Default to unchecked, will be set later
+                    completed: false, // Default to unchecked, will be set later
                 };
 
                 // If habit was completed today, keep it checked
                 if (isToday(habit.lastCompleted)) {
                     habit.completed = true;
-                } 
+                }
                 // If the last completion was NOT yesterday, reset streak
                 else if (!isYesterday(habit.lastCompleted)) {
                     habit.streak = 0;
@@ -202,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 text: habitText,
                 streak: 0,
                 lastCompleted: null,
-                completed: false
+                completed: false,
             };
             addHabitToUI(newHabit);
             saveHabits();
@@ -229,18 +233,18 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 habit.lastCompleted = getTodayDate();
             }
-        
+
             // Once checked, disable the checkbox from being unchecked for the rest of the day
             if (checkbox.checked) {
                 checkbox.disabled = true; // Disable unchecking
             }
-        
-            console.log("🟢 Streak updated:", habit.streak, "Last Completed:", habit.lastCompleted);
-        
+
+            // console.log("🟢 Streak updated:", habit.streak, "Last Completed:", habit.lastCompleted);
+
             updateHabitDisplay(listItem, habit);
             saveHabits();
         });
-                
+
         const habitText = document.createElement("span");
         habitText.classList.add("habit-text");
         habitText.textContent = habit.text;
@@ -267,10 +271,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function updateHabitDisplay(listItem, habit) {
         const streakDisplay = listItem.querySelector(".habit-streak");
-    
+
         // Store the correct streak in the dataset for later retrieval
         listItem.dataset.streak = habit.streak;
-    
+
         if (habit.streak > 0) {
             streakDisplay.innerHTML = `Streak: ${habit.streak} 🔥`;
             streakDisplay.style.color = "green";
@@ -279,31 +283,28 @@ document.addEventListener("DOMContentLoaded", function () {
             streakDisplay.style.color = "red";
         }
     }
-    
 
     function saveHabits() {
         const habits = [];
-        document.querySelectorAll(".habit-item").forEach(item => {
+        document.querySelectorAll(".habit-item").forEach((item) => {
             const habitText = item.querySelector(".habit-text").textContent;
             const checkbox = item.querySelector("input");
-    
+
             // Retrieve the updated habit object
             const habit = {
                 text: habitText,
                 streak: parseInt(item.dataset.streak) || 0, // Get from dataset (stores latest value)
                 lastCompleted: checkbox.checked ? getTodayDate() : null,
-                completed: checkbox.checked
+                completed: checkbox.checked,
             };
-    
+
             habits.push(habit);
         });
-    
+
         chrome.storage.sync.set({ habits: habits }, function () {
-            console.log("✅ Habits saved correctly:", habits);
+            console.log("✅ Habits saved correctly");
         });
     }
-    
-    
 
     // Utility function to get today's date (YYYY-MM-DD)
     function getTodayDate() {
@@ -323,6 +324,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// ------------------------Layout Slider------------------------
 document.addEventListener("DOMContentLoaded", function () {
     const sections = document.querySelectorAll(".section");
     let currentIndex = 0;
@@ -334,7 +336,9 @@ document.addEventListener("DOMContentLoaded", function () {
         const nextSection = sections[newIndex];
 
         // Add slide-out class to current section
-        currentSection.classList.add(direction === "next" ? "hidden-left" : "hidden-right");
+        currentSection.classList.add(
+            direction === "next" ? "hidden-left" : "hidden-right"
+        );
 
         setTimeout(() => {
             currentSection.classList.remove("active", "hidden-left", "hidden-right");
@@ -342,7 +346,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Show new section after the transition
             nextSection.classList.add("active");
             nextSection.classList.remove("hidden-left", "hidden-right");
-        }, 400); // Match transition time
+        }, 400);
 
         currentIndex = newIndex;
     }

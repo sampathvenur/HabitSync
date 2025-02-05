@@ -70,8 +70,6 @@ function startBackgroundTimer() {
     }, 1000);
 }
 
-
-// Show notification when Pomodoro ends
 // Show notification when Pomodoro ends
 function showNotification() {
     chrome.notifications.create("", {
@@ -86,4 +84,3 @@ function showNotification() {
         }
     });
 }
-
