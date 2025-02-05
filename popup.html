@@ -11,40 +11,45 @@
 <body>
     <div class="container">
         <h1>HabitSync</h1>
-        <p>Your personal habit tracker & Pomodoro timer.</p>
+        <p>Your Personal To-Do, Habit Tracker & Pomodoro Timer All in One Place.</p>
 
-        <!-- To-Do List Section -->
-        <div class="todo-container">
-            <h2>To-Do List</h2>
-            <input type="text" id="todoInput" placeholder="Add a new task..." />
-            <button id="addTodo">Add</button>
-            <ul id="todoList"></ul>
-        </div>
-
-        <!-- Pomodoro Timer Section -->
-        <!-- Pomodoro Timer Section -->
-        <div class="pomodoro-container">
-            <h2>Pomodoro Timer</h2>
-
-            <!-- Allow user to set custom time -->
-            <input type="number" id="setMinutes" min="1" max="60" value="25" />
-            minutes
-
-            <div class="timer">
-                <span id="minutes">25</span>:<span id="seconds">00</span>
+        <!-- Section Container -->
+        <div class="section-container">
+            <!-- To-Do List Section -->
+            <div class="section active">
+                <h2>To-Do List 📝</h2>
+                <input type="text" id="todoInput" placeholder="Add a new task...." />
+                <button id="addTodo">Add</button>
+                <ul id="todoList"></ul>
             </div>
 
-            <button id="startTimer">Start</button>
-            <button id="pauseTimer">Pause</button>
-            <button id="resetTimer">Reset</button>
+            <!-- Habit Tracker Section -->
+            <div class="section">
+                <h2>Habit Tracker 🗓️</h2>
+                <input type="text" id="habitInput" placeholder="Enter a new habit...." />
+                <button id="addHabit">Add Habit</button>
+                <ul id="habitList"></ul>
+            </div>
+
+            <!-- Pomodoro Timer Section -->
+            <div class="section">
+                <h2>Pomodoro Timer ⌚</h2>
+                <p>Select a minute and hit Enter/Reset</p>
+                <input type="number" id="setMinutes" min="1" max="60" value="25" />
+                minutes
+                <div class="timer">
+                    <span id="minutes">25</span>:<span id="seconds">00</span>
+                </div>
+                <button id="startTimer">Start</button>
+                <button id="pauseTimer">Pause</button>
+                <button id="resetTimer">Reset</button>
+            </div>
         </div>
 
-        <!-- Habit Tracker Section -->
-        <div class="habit-container">
-            <h2>Habit Tracker</h2>
-            <input type="text" id="habitInput" placeholder="Enter a new habit..." />
-            <button id="addHabit">Add Habit</button>
-            <ul id="habitList"></ul>
+        <!-- Navigation Buttons -->
+        <div class="navigation">
+            <button id="prevSection">◀ Previous</button>
+            <button id="nextSection">Next ▶</button>
         </div>
     </div>
 

@@ -322,3 +322,41 @@ document.addEventListener("DOMContentLoaded", function () {
         return date === yesterday.toISOString().split("T")[0];
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const sections = document.querySelectorAll(".section");
+    let currentIndex = 0;
+
+    function showSection(newIndex, direction) {
+        if (newIndex === currentIndex) return;
+
+        const currentSection = sections[currentIndex];
+        const nextSection = sections[newIndex];
+
+        // Add slide-out class to current section
+        currentSection.classList.add(direction === "next" ? "hidden-left" : "hidden-right");
+
+        setTimeout(() => {
+            currentSection.classList.remove("active", "hidden-left", "hidden-right");
+
+            // Show new section after the transition
+            nextSection.classList.add("active");
+            nextSection.classList.remove("hidden-left", "hidden-right");
+        }, 400); // Match transition time
+
+        currentIndex = newIndex;
+    }
+
+    document.getElementById("nextSection").addEventListener("click", () => {
+        let nextIndex = (currentIndex + 1) % sections.length;
+        showSection(nextIndex, "next");
+    });
+
+    document.getElementById("prevSection").addEventListener("click", () => {
+        let prevIndex = (currentIndex - 1 + sections.length) % sections.length;
+        showSection(prevIndex, "prev");
+    });
+
+    // Initialize first section
+    sections[currentIndex].classList.add("active");
+});

@@ -1,186 +1,297 @@
+/* Modern Reset & Base Styles */
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    width: 300px;
-    padding: 20px;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    width: 360px;
+    margin: 0;
+    padding: 0;
+    background: #ffffff;
+    color: #1a1a1a;
 }
 
 .container {
-    background-color: #f4f4f4;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 1.5rem;
+    background: linear-gradient(to bottom right, #fcfcfc, #f7f7f7);
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
+h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+p {
+    color: #64748b;
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 1rem;
+}
+
+.section-container {
+    position: relative;
+    height: 380px; /* Increase height to accommodate more items */
+    overflow: hidden;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+
+.section {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 100%;
+    opacity: 0;
+    padding: 1.25rem;
+    box-sizing: border-box;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Remove overflow hidden to allow scrolling within sections */
+}
+
+.section.active {
+    left: 0;
+    opacity: 1;
+}
+
+.section.hidden-left {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.section.hidden-right {
+    transform: translateX(100%);
+    opacity: 0;
+}
+
+/* Input Styles */
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+    margin-bottom: 0.75rem;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+#setMinutes {
+    width: 80px;
+    text-align: center;
+    margin-right: 0.5rem;
+}
+
+/* Button Styles */
 button {
-    padding: 10px 15px;
-    margin-top: 10px;
-    background-color: #007bff;
-    color: white;
+    padding: 0.75rem 1.25rem;
     border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
     cursor: pointer;
-    border-radius: 5px;
+    transition: all 0.2s ease;
+    background: #3b82f6;
+    color: white;
 }
 
 button:hover {
-    background-color: #0056b3;
+    background: #2563eb;
+    transform: translateY(-1px);
 }
 
-/* To-Do List Styles */
-.todo-container {
-    margin-top: 20px;
-    text-align: left;
-}
-
-.todo-container h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-#todoInput {
-    width: 70%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-#addTodo {
-    padding: 8px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-#addTodo:hover {
-    background-color: #0056b3;
-}
-
-#todoList {
-    list-style-type: none;
-    padding: 0;
-}
-
-.todo-item {
+.navigation {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    background: #f8f8f8;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
+    margin-top: 1.25rem;
+    padding: 0 0.5rem;
 }
 
-.todo-item input[type="checkbox"] {
-    margin-right: 10px;
+.navigation button {
+    padding: 0.6rem 1rem;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 0.85rem;
+    border: 1px solid #e2e8f0;
 }
 
-.todo-item .delete {
-    color: red;
-    cursor: pointer;
+.navigation button:hover {
+    background: #f1f5f9;
+    color: #1e293b;
 }
 
-/* Pomodoro Timer Styles */
-.pomodoro-container {
-    margin-top: 20px;
-    text-align: center;
-}
-
+/* Timer Styles - Kept as is */
 .timer {
-    font-size: 24px;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-button {
-    margin: 5px;
-    padding: 10px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #334155;
+    margin: 1.5rem 0;
+    font-variant-numeric: tabular-nums;
 }
 
 #startTimer {
-    background-color: #28a745;
-    color: white;
+    background: #22c55e;
+}
+
+#startTimer:hover {
+    background: #16a34a;
 }
 
 #pauseTimer {
-    background-color: #ffc107;
-    color: black;
+    background: #eab308;
+}
+
+#pauseTimer:hover {
+    background: #ca8a04;
 }
 
 #resetTimer {
-    background-color: #dc3545;
-    color: white;
+    background: #ef4444;
 }
 
-/* Pomodoro Timer Input */
-#setMinutes {
-    width: 50px;
-    text-align: center;
-    font-size: 16px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+#resetTimer:hover {
+    background: #dc2626;
 }
 
-/* Habit Tracker Styles */
-.habit-container {
-    margin-top: 20px;
-    text-align: left;
-}
-
-.habit-container h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-#habitInput {
-    width: 70%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-#addHabit {
-    padding: 8px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-#addHabit:hover {
-    background-color: #0056b3;
-}
-
+#todoList,
 #habitList {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
+    margin: 1rem 0;
+    max-height: 200px; /* Keeps list contained */
+    min-height: 80px;  /* Ensures scroll space exists */
+    overflow-y: scroll; /* Forces scrollbar to always be visible */
+    padding-right: 6px;
+    scroll-behavior: smooth;
+    display: flex;
+    flex-direction: column;
+    will-change: transform;
 }
 
+
+/* Ensure scrollbar appears even with fewer items */
+#todoList::-webkit-scrollbar,
+#habitList::-webkit-scrollbar {
+    width: 6px; /* Visible scrollbar width */
+}
+
+#todoList::-webkit-scrollbar-track,
+#habitList::-webkit-scrollbar-track {
+    background: #f1f5f9; /* Light gray track */
+    border-radius: 3px;
+}
+
+#todoList::-webkit-scrollbar-thumb,
+#habitList::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+    border: 1px solid #f1f5f9;
+}
+
+#todoList::-webkit-scrollbar-thumb:hover,
+#habitList::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+.todo-item,
 .habit-item {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    background: #f8f8f8;
-    padding: 8px;
-    margin-top: 5px;
-    border-radius: 5px;
+    padding: 0.75rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    transition: all 0.2s ease;
 }
 
+.todo-item:hover,
+.habit-item:hover {
+    background: #f1f5f9;
+}
+
+.todo-item input[type="checkbox"],
 .habit-item input[type="checkbox"] {
-    margin-right: 10px;
-}
-
-.habit-item .delete {
-    color: red;
+    margin-right: 0.75rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: 2px solid #94a3b8;
     cursor: pointer;
 }
 
+.delete {
+    color: #ef4444;
+    cursor: pointer;
+    padding: 0.25rem;
+    margin-left: auto;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.delete:hover {
+    opacity: 1;
+}
+
 .habit-streak {
-    font-weight: bold;
-    color: green;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #22c55e;
+    margin-left: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(34, 197, 94, 0.1);
+    border-radius: 4px;
+}
+
+/* Enhanced Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+    border-radius: 3px;
+    margin: 4px 0;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 3px;
+    border: 1px solid #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Add fade effect at the bottom of lists */
+#todoList::after,
+#habitList::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    background: linear-gradient(to top, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0));
+    pointer-events: none;
 }
